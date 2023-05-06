@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:clone_instagram/utils/colors.dart';
+import 'package:clone_instagram/utils/utiles.dart';
 
 import 'package:clone_instagram/widgets/text_field_input.dart';
 
@@ -20,6 +24,12 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
 
+  // Profile image
+  Uint8List? _image;
+
+  // Loading
+  bool _isLoading = false;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -27,6 +37,34 @@ class _SignupScreenState extends State<SignupScreen> {
     _bioController.dispose();
     _usernameController.dispose();
     super.dispose();
+  }
+
+  void selectImage() async {
+    Uint8List uint8list = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = uint8list;
+    });
+  }
+
+  void signUpUser(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String result = await AuthMethods().signUpUser(
+      email: _emailController.text,
+      password: _passController.text,
+      username: _usernameController.text,
+      bio: _bioController.text,
+      profileImage: _image,
+    );
+
+    if (result != 'success') {
+      showSnackBar(context, result);
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -39,6 +77,7 @@ class _SignupScreenState extends State<SignupScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Flexible(flex: 2, child: Container()),
+
             // svg image
             SvgPicture.asset(
               'assets/images/ic_instagram.svg',
@@ -48,22 +87,26 @@ class _SignupScreenState extends State<SignupScreen> {
                 BlendMode.srcIn,
               ),
             ),
-
             const SizedBox(height: 64),
 
             Stack(
               children: [
-                const CircleAvatar(
-                  radius: 64,
-                  backgroundImage: NetworkImage(
-                    'https://cdn.pixabay.com/photo/2017/06/09/17/11/model-2387582_960_720.jpg',
-                  ),
-                ),
+                _image != null
+                    ? CircleAvatar(
+                        radius: 64,
+                        backgroundImage: MemoryImage(_image!),
+                      )
+                    : const CircleAvatar(
+                        radius: 64,
+                        backgroundImage: NetworkImage(
+                          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+                        ),
+                      ),
                 Positioned(
                   bottom: 0,
                   right: 0,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () => selectImage(),
                     icon: const Icon(Icons.add_a_photo),
                   ),
                 ),
@@ -106,16 +149,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
             // button login
             InkWell(
-              onTap: () async {
-                String result = await AuthMethods().signUpUser(
-                  email: _emailController.text,
-                  password: _passController.text,
-                  username: _usernameController.text,
-                  bio: _bioController.text,
-                );
-
-                print(result);
-              },
+              onTap: () => signUpUser(context),
               child: Container(
                 width: double.infinity,
                 alignment: Alignment.center,
@@ -128,7 +162,17 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   color: blueColor,
                 ),
-                child: const Text('Sign up'),
+                child: _isLoading
+                    ? const CircularProgressIndicator(
+                        color: primaryColor,
+                      )
+                    : const Text(
+                        'Sign up',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
             ),
 
