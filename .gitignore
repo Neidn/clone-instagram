@@ -32,6 +32,11 @@ R
 .pub/
 /build/
 
+# Ios Pods
+/ios/Podfile.lock
+/ios/Podfile
+/ios/Pods/
+
 # Symbolication related
 app.*.symbols
 

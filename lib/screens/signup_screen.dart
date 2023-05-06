@@ -1,24 +1,29 @@
-import 'package:clone_instagram/utils/colors.dart';
-import 'package:clone_instagram/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+import 'package:clone_instagram/utils/colors.dart';
+import 'package:clone_instagram/widgets/text_field_input.dart';
+
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passController.dispose();
+    _bioController.dispose();
+    _usernameController.dispose();
   }
 
   @override
@@ -42,6 +47,45 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
 
             const SizedBox(height: 64),
+
+            Stack(
+              children: [
+                const CircleAvatar(
+                  radius: 64,
+                  backgroundImage: NetworkImage(
+                    'https://cdn.pixabay.com/photo/2017/06/09/17/11/model-2387582_960_720.jpg',
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add_a_photo),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 24),
+
+            // text field for username
+            TextFieldInput(
+              hintText: 'Enter your username',
+              textInputType: TextInputType.name,
+              textEditingController: _usernameController,
+            ),
+
+            const SizedBox(height: 24),
+
+            // text field for bio
+            TextFieldInput(
+              hintText: 'Enter your bio',
+              textInputType: TextInputType.text,
+              textEditingController: _bioController,
+            ),
+
+            const SizedBox(height: 24),
 
             // text field for email
             TextFieldInput(

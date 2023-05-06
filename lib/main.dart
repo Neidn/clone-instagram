@@ -1,3 +1,4 @@
+import 'package:clone_instagram/screens/signup_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -41,11 +42,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),
-      // home: ResponsiveLayout(
-        // webScreenLayout: WebScreenLayout(),
-        // mobileScreenLayout: MobileScreenLayout(),
-      // ),
-      home: LoginScreen(),
+      home: SignupScreen(),
     );
   }
 }
