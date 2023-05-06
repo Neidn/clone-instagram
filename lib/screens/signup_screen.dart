@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:clone_instagram/utils/colors.dart';
+
 import 'package:clone_instagram/widgets/text_field_input.dart';
+
+import 'package:clone_instagram/resources/auth_methods.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -19,11 +22,11 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _emailController.dispose();
     _passController.dispose();
     _bioController.dispose();
     _usernameController.dispose();
+    super.dispose();
   }
 
   @override
@@ -66,7 +69,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ],
             ),
-
             const SizedBox(height: 24),
 
             // text field for username
@@ -75,16 +77,6 @@ class _SignupScreenState extends State<SignupScreen> {
               textInputType: TextInputType.name,
               textEditingController: _usernameController,
             ),
-
-            const SizedBox(height: 24),
-
-            // text field for bio
-            TextFieldInput(
-              hintText: 'Enter your bio',
-              textInputType: TextInputType.text,
-              textEditingController: _bioController,
-            ),
-
             const SizedBox(height: 24),
 
             // text field for email
@@ -102,12 +94,28 @@ class _SignupScreenState extends State<SignupScreen> {
               textEditingController: _passController,
               isPass: true,
             ),
+            const SizedBox(height: 24),
 
+            // text field for bio
+            TextFieldInput(
+              hintText: 'Enter your bio',
+              textInputType: TextInputType.text,
+              textEditingController: _bioController,
+            ),
             const SizedBox(height: 24),
 
             // button login
             InkWell(
-              onTap: () => {},
+              onTap: () async {
+                String result = await AuthMethods().signUpUser(
+                  email: _emailController.text,
+                  password: _passController.text,
+                  username: _usernameController.text,
+                  bio: _bioController.text,
+                );
+
+                print(result);
+              },
               child: Container(
                 width: double.infinity,
                 alignment: Alignment.center,
@@ -120,7 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   color: blueColor,
                 ),
-                child: const Text('Log in'),
+                child: const Text('Sign up'),
               ),
             ),
 
@@ -138,15 +146,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: const Text("Don't have an account?"),
                 ),
                 GestureDetector(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8,
-                    ),
-                    child: const Text(
-                      "Sign up",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  child: const Text(
+                    "Sign up",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
