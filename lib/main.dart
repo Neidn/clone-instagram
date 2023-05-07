@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:clone_instagram/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -13,7 +13,6 @@ import 'package:clone_instagram/responsive/mobile_screen_layout.dart';
 import 'package:clone_instagram/responsive/web_screen_layout.dart';
 
 import 'package:clone_instagram/screens/login_screen.dart';
-import 'package:clone_instagram/screens/signup_screen.dart';
 
 void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -69,6 +68,10 @@ class MyApp extends StatelessWidget {
           return const LoginScreen();
         },
       ),
+      routes: {
+        LoginScreen.routeName: (context) => const LoginScreen(),
+        SignupScreen.routeName: (context) => const SignupScreen(),
+      },
     );
   }
 }

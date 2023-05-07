@@ -5,13 +5,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:clone_instagram/utils/colors.dart';
-import 'package:clone_instagram/utils/utiles.dart';
+import 'package:clone_instagram/utils/utils.dart';
 
 import 'package:clone_instagram/widgets/text_field_input.dart';
 
 import 'package:clone_instagram/resources/auth_methods.dart';
 
+import 'package:clone_instagram/responsive/mobile_screen_layout.dart';
+import 'package:clone_instagram/responsive/responsive_layout_screen.dart';
+import 'package:clone_instagram/responsive/web_screen_layout.dart';
+import 'package:clone_instagram/screens/login_screen.dart';
+
 class SignupScreen extends StatefulWidget {
+  static const String routeName = '/signup';
+
   const SignupScreen({Key? key}) : super(key: key);
 
   @override
@@ -59,12 +66,31 @@ class _SignupScreenState extends State<SignupScreen> {
       profileImage: _image,
     );
 
-    if (result != 'Success') {
+    if (result == 'Success') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout(),
+          ),
+        ),
+      );
+    } else {
       showSnackBar(context, result);
     }
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void navigateToLoginScreen(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
   }
 
   @override
@@ -187,11 +213,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   padding: const EdgeInsets.only(
                     right: 8,
                   ),
-                  child: const Text("Don't have an account?"),
+                  child: const Text("Already have an account?"),
                 ),
                 GestureDetector(
+                  onTap: () => navigateToLoginScreen(context),
                   child: const Text(
-                    "Sign up",
+                    "Login",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),

@@ -55,7 +55,7 @@ class AuthMethods {
   }
 
   // Sign in(email, password)
-  Future<String> signInUser({
+  Future<String> loginUser({
     required String email,
     required String password,
   }) async {
@@ -63,7 +63,7 @@ class AuthMethods {
 
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        await _auth.signInWithEmailAndPassword(
             email: email, password: password);
 
         result = 'Success';
