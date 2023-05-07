@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:clone_instagram/models/user.dart' as model;
 
 import 'package:clone_instagram/resources/storage_methods.dart';
 
@@ -34,16 +34,20 @@ class AuthMethods {
         String profileUrl = await StorageMethods()
             .uploadImageToStrong('profilePics', profileImage!, false);
 
+        model.User user = model.User(
+          email: email,
+          uid: credential.user!.uid,
+          profileUrl: profileUrl,
+          username: username,
+          bio: bio,
+          followers: [],
+          following: [],
+        );
+
         // Add user info to firestore
-        await _firestore.collection('users').doc(credential.user!.uid).set({
-          'uid': credential.user!.uid,
-          'username': username,
-          'email': email,
-          'bio': bio,
-          'followers': [],
-          'following': [],
-          'profileUrl': profileUrl,
-        });
+        await _firestore.collection('users').doc(credential.user!.uid).set(
+              user.toJson(),
+            );
 
         result = 'Success';
       }
