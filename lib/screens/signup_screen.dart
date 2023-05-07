@@ -59,7 +59,7 @@ class _SignupScreenState extends State<SignupScreen> {
       profileImage: _image,
     );
 
-    if (result != 'success') {
+    if (result != 'Success') {
       showSnackBar(context, result);
     }
     setState(() {

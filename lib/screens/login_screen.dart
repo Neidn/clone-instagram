@@ -1,7 +1,14 @@
-import 'package:clone_instagram/utils/colors.dart';
-import 'package:clone_instagram/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:clone_instagram/resources/auth_methods.dart';
+
+import 'package:clone_instagram/utils/colors.dart';
+import 'package:clone_instagram/utils/utiles.dart';
+
+import 'package:clone_instagram/screens/home_screen.dart';
+
+import 'package:clone_instagram/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,11 +21,37 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
 
+  // Loading
+  bool _isLoading = false;
+
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passController.dispose();
+  }
+
+  void signInUser(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String result = await AuthMethods().signInUser(
+      email: _emailController.text,
+      password: _passController.text,
+    );
+
+    if (result == 'Success') {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
+    } else {
+      showSnackBar(context, result);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -63,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
             // button login
             InkWell(
-              onTap: () => {},
+              onTap: () => signInUser(context),
               child: Container(
                 width: double.infinity,
                 alignment: Alignment.center,
@@ -76,7 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   color: blueColor,
                 ),
-                child: const Text('Log in'),
+                child: _isLoading
+                    ? const CircularProgressIndicator(color: primaryColor)
+                    : const Text('Log in'),
               ),
             ),
 
