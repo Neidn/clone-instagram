@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:clone_instagram/resources/auth_methods.dart';
 
 import 'package:clone_instagram/utils/colors.dart';
@@ -24,9 +27,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _emailController.dispose();
     _passController.dispose();
+    super.dispose();
   }
 
   void signInUser(BuildContext context) async {
