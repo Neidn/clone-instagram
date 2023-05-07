@@ -6,8 +6,6 @@ import 'package:clone_instagram/resources/auth_methods.dart';
 import 'package:clone_instagram/utils/colors.dart';
 import 'package:clone_instagram/utils/utiles.dart';
 
-import 'package:clone_instagram/screens/home_screen.dart';
-
 import 'package:clone_instagram/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -42,9 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (result == 'Success') {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
     } else {
       showSnackBar(context, result);
     }
