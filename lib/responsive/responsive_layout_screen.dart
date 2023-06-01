@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:clone_instagram/providers/user_provider.dart';
+import '/providers/user_provider.dart';
 
-import 'package:clone_instagram/utils/dimensions.dart';
+import '/utils/global_variables.dart';
 
 class ResponsiveLayout extends StatefulWidget {
-  Widget webScreenLayout;
-  Widget mobileScreenLayout;
+  final Widget webScreenLayout;
+  final Widget mobileScreenLayout;
 
-  ResponsiveLayout({
+  const ResponsiveLayout({
     super.key,
     required this.webScreenLayout,
     required this.mobileScreenLayout,

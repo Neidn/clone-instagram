@@ -3,9 +3,11 @@ import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:clone_instagram/models/user.dart' as model;
+import '/utils/global_variables.dart';
 
-import 'package:clone_instagram/resources/storage_methods.dart';
+import '/models/user.dart' as model;
+
+import '/resources/storage_methods.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -15,7 +17,7 @@ class AuthMethods {
     User currentUser = _auth.currentUser!;
 
     DocumentSnapshot documentSnapshot =
-        await _firestore.collection('users').doc(currentUser.uid).get();
+        await _firestore.collection(firebaseUsers).doc(currentUser.uid).get();
 
     return model.User.fromSnap(documentSnapshot);
   }
@@ -54,7 +56,7 @@ class AuthMethods {
         );
 
         // Add user info to firestore
-        await _firestore.collection('users').doc(credential.user!.uid).set(
+        await _firestore.collection(firebaseUsers).doc(credential.user!.uid).set(
               user.toJson(),
             );
 
@@ -88,5 +90,9 @@ class AuthMethods {
     }
 
     return result;
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }

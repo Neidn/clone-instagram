@@ -9,7 +9,7 @@ class User {
   final List<dynamic> followers;
   final List<dynamic> following;
 
-  User({
+  const User({
     required this.email,
     required this.uid,
     required this.profileUrl,

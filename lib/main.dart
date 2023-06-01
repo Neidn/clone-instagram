@@ -5,18 +5,21 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:clone_instagram/providers/user_provider.dart';
+import '/providers/user_provider.dart';
 
-import 'package:clone_instagram/utils/colors.dart';
+import '/utils/colors.dart';
 
-import 'package:clone_instagram/firebase_options.dart';
+import '/firebase_options.dart';
 
-import 'package:clone_instagram/responsive/responsive_layout_screen.dart';
-import 'package:clone_instagram/responsive/mobile_screen_layout.dart';
-import 'package:clone_instagram/responsive/web_screen_layout.dart';
+import '/responsive/responsive_layout_screen.dart';
+import '/responsive/mobile_screen_layout.dart';
+import '/responsive/web_screen_layout.dart';
 
-import 'package:clone_instagram/screens/signup_screen.dart';
-import 'package:clone_instagram/screens/login_screen.dart';
+import '/screens/add_post_screen.dart';
+import '/screens/comments_screen.dart';
+import '/screens/feed_screen.dart';
+import '/screens/signup_screen.dart';
+import '/screens/login_screen.dart';
 
 void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -54,9 +57,9 @@ class MyApp extends StatelessWidget {
             // connectionState: ConnectionState.active
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                return ResponsiveLayout(
-                  webScreenLayout: const WebScreenLayout(),
-                  mobileScreenLayout: const MobileScreenLayout(),
+                return const ResponsiveLayout(
+                  webScreenLayout: WebScreenLayout(),
+                  mobileScreenLayout: MobileScreenLayout(),
                 );
               } else if (snapshot.hasError) {
                 return Center(
@@ -81,6 +84,9 @@ class MyApp extends StatelessWidget {
         routes: {
           LoginScreen.routeName: (context) => const LoginScreen(),
           SignupScreen.routeName: (context) => const SignupScreen(),
+          AddPostScreen.routeName: (context) => const AddPostScreen(),
+          FeedScreen.routeName: (context) => const FeedScreen(),
+          CommentsScreen.routeName: (context) => const CommentsScreen(),
         },
       ),
     );

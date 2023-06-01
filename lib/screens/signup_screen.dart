@@ -53,34 +53,36 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
-  void signUpUser(BuildContext context) async {
+  void signUpUser(BuildContext context) {
     setState(() {
       _isLoading = true;
     });
 
-    String result = await AuthMethods().signUpUser(
+    AuthMethods()
+        .signUpUser(
       email: _emailController.text,
       password: _passController.text,
       username: _usernameController.text,
       bio: _bioController.text,
       profileImage: _image,
-    );
-
-    if (result == 'Success') {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ResponsiveLayout(
-            webScreenLayout: WebScreenLayout(),
-            mobileScreenLayout: MobileScreenLayout(),
+    )
+        .then((result) {
+      if (result == 'Success') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+              webScreenLayout: WebScreenLayout(),
+              mobileScreenLayout: MobileScreenLayout(),
+            ),
           ),
-        ),
-      );
-    } else {
-      showSnackBar(context, result);
-    }
-    setState(() {
-      _isLoading = false;
+        );
+      } else {
+        showSnackBar(context, result);
+      }
+      setState(() {
+        _isLoading = false;
+      });
     });
   }
 

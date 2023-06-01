@@ -1,4 +1,5 @@
 import 'package:clone_instagram/utils/colors.dart';
+import 'package:clone_instagram/utils/global_variables.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,14 +16,14 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
   @override
   void initState() {
-    _pageController = PageController(initialPage: _currentIndex);
     super.initState();
+    _pageController = PageController(initialPage: _currentIndex);
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
     super.dispose();
+    _pageController.dispose();
   }
 
   void navigateToScreen(int index) {
@@ -38,17 +39,13 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        children: [
-          Text('Home'),
-          Text('Search'),
-          Text('Add'),
-          Text('Favorite'),
-          Text('Profile'),
-        ],
-        physics: const NeverScrollableScrollPhysics(),
-        controller: _pageController,
-        onPageChanged: onPageChanged,
+      body: SafeArea(
+        child: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          onPageChanged: onPageChanged,
+          children: homeScreenItems,
+        ),
       ),
       bottomNavigationBar: CupertinoTabBar(
         backgroundColor: mobileBackgroundColor,
